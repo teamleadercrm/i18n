@@ -74,7 +74,7 @@ class Provider extends PureComponent {
   }
 
   getUserLanguage() {
-    const language = document.body.parentNode.getAttribute('lang');
+    const language = this.props.language || document.body.parentNode.getAttribute('lang');
 
     if (!supportedLanguages.includes(language)) {
       return this.props.fallbackLanguage;
@@ -140,6 +140,7 @@ class Provider extends PureComponent {
 Provider.propTypes = {
   children: PropTypes.any.isRequired,
   domain: PropTypes.string.isRequired,
+  language: PropTypes.string,
   fallbackLanguage: PropTypes.string,
   path: PropTypes.oneOf(PropTypes.string, PropTypes.func).isRequired,
 };
