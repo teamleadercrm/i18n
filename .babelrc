@@ -8,6 +8,7 @@
     "transform-react-remove-prop-types"
   ],
   "presets": [
+    "@babel/preset-flow",
     [
       "@babel/preset-env",
       {

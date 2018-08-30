@@ -1,4 +1,6 @@
-import React, { PureComponent } from 'react';
+// @flow
+
+import * as React from 'react';
 import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 import { IntlProvider, addLocaleData, FormattedMessage } from 'react-intl';
@@ -11,8 +13,8 @@ let Translation = NotInitialisedError;
 
 const FALLBACK_LANGUAGE = 'en';
 
-const withI18n = Component => {
-  class WithI18nComponent extends PureComponent {
+const withI18n = (Component: any) => {
+  class WithI18nComponent extends React.PureComponent<any> {
     render() {
       return <Component {...this.props} translate={translate} formatDate={formatDate} />;
     }
@@ -21,7 +23,18 @@ const withI18n = Component => {
   return WithI18nComponent;
 };
 
-class Provider extends PureComponent {
+type Props = {
+  children: any,
+  domain: string,
+  language: ?string,
+  path: string | (string => string),
+};
+
+type State = {
+  loaded: boolean,
+};
+
+class Provider extends React.PureComponent<Props, State> {
   state = {
     loaded: false,
   };
@@ -38,17 +51,17 @@ class Provider extends PureComponent {
       messages: translations,
       children: React.createElement('div'),
       locale: language,
-      ref: element => {
+      ref: (element: ?React.Component<typeof IntlProvider>) => {
+        if (!element) {
+          return;
+        }
+
         const { intl } = element.getChildContext();
 
         const provideIntlContext = Component => {
-          class IntlComponent extends PureComponent {
+          class IntlComponent extends React.PureComponent<{ id: string }> {
             static childContextTypes = {
               intl: PropTypes.object,
-            };
-
-            static propTypes = {
-              id: PropTypes.string.isRequired,
             };
 
             getChildContext() {
@@ -64,7 +77,8 @@ class Provider extends PureComponent {
           return IntlComponent;
         };
 
-        translate = (id, values) => intl.formatMessage({ id: domain ? `${domain}.${id}` : id }, values);
+        translate = (id: string, values: ?Object): string =>
+          intl.formatMessage({ id: domain ? `${domain}.${id}` : id }, values);
         formatDate = intl.formatDate;
         Translation = provideIntlContext(FormattedMessage);
 
@@ -75,29 +89,29 @@ class Provider extends PureComponent {
     render(component, document.createElement('div'));
   }
 
-  getUserLanguage() {
-    const language = this.props.language || document.documentElement.getAttribute('lang');
+  getUserLanguage(): string {
+    const language = this.props.language || (document.documentElement && document.documentElement.getAttribute('lang'));
 
-    if (!supportedLanguages.includes(language)) {
+    if (!language || !supportedLanguages.includes(language)) {
       return FALLBACK_LANGUAGE;
     }
 
     return language;
   }
 
-  async fetchTranslations(language) {
+  async fetchTranslations(language: string): Object {
     const path = this.getTranslationsPath(language);
 
     try {
       const response = await fetch(path);
-      const json = await response.json();
+      const json: Object = await response.json();
       return json;
     } catch (error) {}
 
     return {};
   }
 
-  getTranslationsPath(language) {
+  getTranslationsPath(language: string) {
     const { path } = this.props;
 
     if (typeof path === 'function') {
@@ -107,15 +121,15 @@ class Provider extends PureComponent {
     return `${path}${language}.json`;
   }
 
-  getAllLocaleData() {
-    return supportedLanguages.reduce((currentLocaleData, language) => {
+  getAllLocaleData(): Array<Object> {
+    return supportedLanguages.reduce((currentLocaleData: Array<Object>, language: string): Array<Object> => {
       const languageCode = language.split('-')[0];
       const localeData = this.getLocaleDataForLanguage(languageCode);
       return [...currentLocaleData, ...localeData];
     }, []);
   }
 
-  getLocaleDataForLanguage(languageCode) {
+  getLocaleDataForLanguage(languageCode: string): Array<Object> {
     // tlh doesn't exist, so we replace it with english (which we want anyway)
     const languageToLoad = languageCode === 'tlh' ? 'en' : languageCode;
 
@@ -136,12 +150,5 @@ class Provider extends PureComponent {
     return this.props.children;
   }
 }
-
-Provider.propTypes = {
-  children: PropTypes.any.isRequired,
-  domain: PropTypes.string.isRequired,
-  language: PropTypes.string,
-  path: PropTypes.oneOf(PropTypes.string, PropTypes.func).isRequired,
-};
 
 export { Provider, translate, formatDate, Translation, withI18n };
