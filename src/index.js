@@ -74,10 +74,6 @@ class Provider extends PureComponent {
   }
 
   getUserLanguage() {
-    if (this.props.isDevelopmentMode) {
-      return this.props.developmentLanguage;
-    }
-
     const language = document.body.parentNode.getAttribute('lang');
 
     if (!supportedLanguages.includes(language)) {
@@ -144,15 +140,11 @@ class Provider extends PureComponent {
 Provider.propTypes = {
   children: PropTypes.any.isRequired,
   domain: PropTypes.string.isRequired,
-  isDevelopmentMode: PropTypes.bool,
-  developmentLanguage: PropTypes.string,
   fallbackLanguage: PropTypes.string,
   path: PropTypes.oneOf(PropTypes.string, PropTypes.func).isRequired,
 };
 
 Provider.defaultProps = {
-  isDevelopmentMode: false,
-  developmentLanguage: 'tlh-KL',
   fallbackLanguage: 'en',
 };
 
