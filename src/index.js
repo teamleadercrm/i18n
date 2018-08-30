@@ -121,9 +121,7 @@ class Provider extends PureComponent {
     let languageToLoad = languageCode;
 
     // tlh doesn't exist, so we replace it with english (which we want anyway)
-    if (languageCode === 'tlh') {
-      languageToLoad = 'en';
-    }
+    const languageToLoad = languageCode === 'tlh' ? 'en' : languageCode;
 
     const localeData = require(`react-intl/locale-data/${languageToLoad}`);
 
