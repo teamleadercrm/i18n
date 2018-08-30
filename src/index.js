@@ -116,8 +116,6 @@ class Provider extends PureComponent {
   }
 
   getLocaleDataForLanguage(languageCode) {
-    let languageToLoad = languageCode;
-
     // tlh doesn't exist, so we replace it with english (which we want anyway)
     const languageToLoad = languageCode === 'tlh' ? 'en' : languageCode;
 
