@@ -74,7 +74,7 @@ class Provider extends PureComponent {
   }
 
   getUserLanguage() {
-    const language = this.props.language || document.body.parentNode.getAttribute('lang');
+    const language = this.props.language || document.documentElement.getAttribute('lang');
 
     if (!supportedLanguages.includes(language)) {
       return this.props.fallbackLanguage;
