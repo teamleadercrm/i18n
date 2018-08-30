@@ -9,6 +9,8 @@ let translate = NotInitialisedError;
 let formatDate = NotInitialisedError;
 let Translation = NotInitialisedError;
 
+const FALLBACK_LANGUAGE = 'en';
+
 const withI18n = Component => {
   class WithI18nComponent extends PureComponent {
     render() {
@@ -77,7 +79,7 @@ class Provider extends PureComponent {
     const language = this.props.language || document.documentElement.getAttribute('lang');
 
     if (!supportedLanguages.includes(language)) {
-      return this.props.fallbackLanguage;
+      return FALLBACK_LANGUAGE;
     }
 
     return language;
@@ -141,12 +143,7 @@ Provider.propTypes = {
   children: PropTypes.any.isRequired,
   domain: PropTypes.string.isRequired,
   language: PropTypes.string,
-  fallbackLanguage: PropTypes.string,
   path: PropTypes.oneOf(PropTypes.string, PropTypes.func).isRequired,
-};
-
-Provider.defaultProps = {
-  fallbackLanguage: 'en',
 };
 
 export { Provider, translate, formatDate, Translation, withI18n };
