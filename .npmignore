@@ -2,3 +2,4 @@ src
 .babelrc
 .editorconfig
 .prettierrc
+.flowconfig
