@@ -25,7 +25,7 @@ const withI18n = (Component: any) => {
 
 type Props = {
   children: any,
-  domain: string,
+  namespace: ?string,
   language: ?string,
   path: string | (string => string),
 };
@@ -40,7 +40,7 @@ class Provider extends React.PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-    const { domain } = this.props;
+    const { namespace } = this.props;
     const language = this.getUserLanguage();
     const localeData = this.getAllLocaleData();
 
@@ -58,7 +58,10 @@ class Provider extends React.PureComponent<Props, State> {
 
         const { intl } = element.getChildContext();
 
-        const provideIntlContext = Component => {
+        const provideIntlContext = (
+          Component: React.ComponentType<any>,
+          getTranslationId: Function,
+        ): React.ComponentType<any> => {
           class IntlComponent extends React.PureComponent<{ id: string }> {
             static childContextTypes = {
               intl: PropTypes.object,
@@ -70,7 +73,7 @@ class Provider extends React.PureComponent<Props, State> {
 
             render() {
               const { id, ...others } = this.props;
-              return <Component {...others} id={`${domain}.${id}`} />;
+              return <Component {...others} id={getTranslationId(id)} />;
             }
           }
 
@@ -78,9 +81,9 @@ class Provider extends React.PureComponent<Props, State> {
         };
 
         translate = (id: string, values: ?Object): string =>
-          intl.formatMessage({ id: domain ? `${domain}.${id}` : id }, values);
+          intl.formatMessage({ id: this.getTranslationId(id) }, values);
         formatDate = intl.formatDate;
-        Translation = provideIntlContext(FormattedMessage);
+        Translation = provideIntlContext(FormattedMessage, this.getTranslationId);
 
         this.setState({ loaded: true });
       },
@@ -88,6 +91,11 @@ class Provider extends React.PureComponent<Props, State> {
 
     render(component, document.createElement('div'));
   }
+
+  getTranslationId = (id: string): string => {
+    const { namespace } = this.props;
+    return namespace ? [namespace, id].join('.') : id;
+  };
 
   getUserLanguage(): string {
     const language = this.props.language || (document.documentElement && document.documentElement.getAttribute('lang'));
