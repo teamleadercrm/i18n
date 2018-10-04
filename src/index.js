@@ -159,4 +159,11 @@ class Provider extends React.PureComponent<Props, State> {
   }
 }
 
+export type Translate = (id: string, values?: {}) => string;
+export type FormatDate = (value: any, options?: {}) => string;
+export type WithI18nProps = {
+  translate: Translate,
+  formatDate: FormatDate
+};
+
 export { Provider, translate, formatDate, Translation, withI18n };
