@@ -4,7 +4,7 @@
   "description": "Teamleader i18n implementation",
   "author": "Teamleader <development@teamleader.eu>",
   "license": "MIT",
-  "main": "lib",
+  "main": "lib/index.js",
   "scripts": {
     "build": "babel src --out-dir lib --copy-files",
     "flow": "flow"
