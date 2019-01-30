@@ -97,7 +97,7 @@ class Provider extends React.PureComponent<Props, State> {
   };
 
   getUserLocale(): string {
-    const { locale } = this.props;
+    const locale = this.props.locale || (document.documentElement && document.documentElement.getAttribute('lang'));
 
     if (!locale) return FALLBACK_LOCALE;
 
