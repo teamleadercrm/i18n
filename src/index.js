@@ -5,13 +5,13 @@ import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 import { IntlProvider, addLocaleData, FormattedMessage } from 'react-intl';
 import NotInitialisedError from './NotInitialisedError';
-import supportedLanguages from './supportedLanguages.json';
+import supportedLocales from './supportedLocales.json';
 
 let translate = NotInitialisedError;
 let formatDate = NotInitialisedError;
 let Translation = NotInitialisedError;
 
-const FALLBACK_LANGUAGE = 'en';
+const FALLBACK_LOCALE = 'en-GB';
 
 const withI18n = (Component: any) => {
   class WithI18nComponent extends React.PureComponent<any> {
@@ -26,7 +26,7 @@ const withI18n = (Component: any) => {
 type Props = {
   children: any,
   namespace: ?string,
-  language: ?string,
+  locale: ?string,
   path: string | (string => string),
 };
 
@@ -40,17 +40,16 @@ class Provider extends React.PureComponent<Props, State> {
   };
 
   async componentDidMount() {
-    const { namespace } = this.props;
-    const language = this.getUserLanguage();
+    const locale = this.getUserLocale();
     const localeData = this.getAllLocaleData();
 
     addLocaleData(localeData);
-    const translations = await this.fetchTranslations(language);
+    const translations = await this.fetchTranslations(locale);
 
     const component = React.createElement(IntlProvider, {
       messages: translations,
       children: React.createElement('div'),
-      locale: language,
+      locale,
       ref: (element: ?React.Component<typeof IntlProvider>) => {
         if (!element) {
           return;
@@ -97,57 +96,62 @@ class Provider extends React.PureComponent<Props, State> {
     return namespace ? [namespace, id].join('.') : id;
   };
 
-  getUserLanguage(): string {
-    const language = this.props.language || (document.documentElement && document.documentElement.getAttribute('lang'));
+  getUserLocale(): string {
+    const locale = this.props.locale || (document.documentElement && document.documentElement.getAttribute('lang'));
 
-    if (!language || !supportedLanguages.includes(language)) {
-      return FALLBACK_LANGUAGE;
+    if (!locale) return FALLBACK_LOCALE;
+
+    // we support both the language code and the language + locale. For example
+    // both 'en' and 'en-GB' are valid though 'en' is considered 'en-US'.
+    const supportedLanguages = supportedLocales.map(this.localeToLanguage);
+
+    if (supportedLocales.includes(locale) || supportedLanguages.includes(locale)) {
+      return locale;
     }
 
-    return language;
+    return FALLBACK_LOCALE;
   }
 
-  async fetchTranslations(language: string): Object {
-    const path = this.getTranslationsPath(language);
+  async fetchTranslations(locale: string): Object {
+    const path = this.getTranslationsPath(locale);
 
     try {
       const response = await fetch(path);
-      const json: Object = await response.json();
-      return json;
+      return await response.json();
     } catch (error) {}
 
     return {};
   }
 
-  getTranslationsPath(language: string) {
+  getTranslationsPath(locale: string) {
     const { path } = this.props;
 
     if (typeof path === 'function') {
-      return path(language);
+      return path(locale);
     }
 
-    return `${path}${language}.json`;
+    return `${path}${locale}.json`;
+  }
+
+  localeToLanguage(locale: string): string {
+    if (locale.match(/^tlh-/)) return 'en';
+    return locale.split('-')[0];
   }
 
   getAllLocaleData(): Array<Object> {
-    return supportedLanguages.reduce((currentLocaleData: Array<Object>, language: string): Array<Object> => {
-      const languageCode = language.split('-')[0];
-      const localeData = this.getLocaleDataForLanguage(languageCode);
-      return [...currentLocaleData, ...localeData];
-    }, []);
-  }
+    const languages = Object.keys(supportedLocales.reduce((languages, locale) => ({
+      ...languages,
+      [this.localeToLanguage(locale)]: true,
+    }), {}));
 
-  getLocaleDataForLanguage(languageCode: string): Array<Object> {
-    // tlh doesn't exist, so we replace it with english (which we want anyway)
-    const languageToLoad = languageCode === 'tlh' ? 'en' : languageCode;
+    const localeData = languages.map(language => require(`react-intl/locale-data/${language}`));
 
-    const localeData = require(`react-intl/locale-data/${languageToLoad}`);
+    localeData.push({
+      locale: 'tlh',
+      parentLocale: 'en'
+    });
 
-    if (languageCode === 'tlh') {
-      localeData.push({ locale: 'tlh', parentLocale: 'en' });
-    }
-
-    return localeData;
+    return localeData.reduce((allLocaleData, localeData) => allLocaleData.concat(localeData), []);
   }
 
   render() {
