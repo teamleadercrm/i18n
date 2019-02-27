@@ -1,3 +1,17 @@
+## [2.0.3] - 2019-02-27
+
+### Security
+
+- Minor update of @babel/cli
+- Minor update of @babel/core
+- Minor update of @babel/plugin-proposal-class-properties
+- Minor update of @babel/plugin-proposal-export-default-from
+- Minor update of @babel/plugin-proposal-export-namespace-from
+- Minor update of @babel/plugin-proposal-object-rest-spread
+- Minor update of @babel/preset-env
+- Patch update of babel-plugin-transform-imports
+- Patch update of babel-plugin-transform-react-remove-prop-types
+
 ## [2.0.2] - 2019-02-01
 
 ### Changed
