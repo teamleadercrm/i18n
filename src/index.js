@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 import { IntlProvider, addLocaleData, FormattedMessage } from 'react-intl';
 import NotInitialisedError from './NotInitialisedError';
-import supportedLocales from './supportedLocales.json';
+import supportedLocales from './supportedLocales';
 
 let translate = NotInitialisedError;
 let formatDate = NotInitialisedError;
