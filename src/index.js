@@ -139,16 +139,21 @@ class Provider extends React.PureComponent<Props, State> {
   }
 
   getAllLocaleData(): Array<Object> {
-    const languages = Object.keys(supportedLocales.reduce((languages, locale) => ({
-      ...languages,
-      [this.localeToLanguage(locale)]: true,
-    }), {}));
+    const languages = Object.keys(
+      supportedLocales.reduce(
+        (languages, locale) => ({
+          ...languages,
+          [this.localeToLanguage(locale)]: true,
+        }),
+        {},
+      ),
+    );
 
     const localeData = languages.map(language => require(`react-intl/locale-data/${language}`));
 
     localeData.push({
       locale: 'tlh',
-      parentLocale: 'en'
+      parentLocale: 'en',
     });
 
     return localeData.reduce((allLocaleData, localeData) => allLocaleData.concat(localeData), []);
@@ -167,7 +172,7 @@ export type Translate = (id: string, values?: {}) => string;
 export type FormatDate = (value: any, options?: {}) => string;
 export type WithI18nProps = {
   translate: Translate,
-  formatDate: FormatDate
+  formatDate: FormatDate,
 };
 
 export { Provider, translate, formatDate, Translation, withI18n };
