@@ -41,7 +41,7 @@ class Provider extends React.PureComponent<Props, State> {
 
   async componentDidMount() {
     const locale = this.getUserLocale();
-    const localeData = this.getAllLocaleData();
+    const localeData = await this.getLocaleData(locale);
 
     addLocaleData(localeData);
     const translations = await this.fetchTranslations(locale);
@@ -138,20 +138,20 @@ class Provider extends React.PureComponent<Props, State> {
     return locale.split('-')[0];
   }
 
-  getAllLocaleData(): Array<Object> {
-    const languages = Object.keys(supportedLocales.reduce((languages, locale) => ({
-      ...languages,
-      [this.localeToLanguage(locale)]: true,
-    }), {}));
+  async getLocaleData(locale: string): Array<Object> {
+    const language = this.localeToLanguage(locale);
 
-    const localeData = languages.map(language => require(`react-intl/locale-data/${language}`));
+    const module = await import(`react-intl/locale-data/${language}`);
+    const localeData = module.default;
 
-    localeData.push({
-      locale: 'tlh',
-      parentLocale: 'en'
-    });
+    if (locale === 'tlh-KL') {
+      localeData.push({
+        locale: 'tlh',
+        parentLocale: 'en',
+      });
+    }
 
-    return localeData.reduce((allLocaleData, localeData) => allLocaleData.concat(localeData), []);
+    return localeData;
   }
 
   render() {
@@ -167,7 +167,7 @@ export type Translate = (id: string, values?: {}) => string;
 export type FormatDate = (value: any, options?: {}) => string;
 export type WithI18nProps = {
   translate: Translate,
-  formatDate: FormatDate
+  formatDate: FormatDate,
 };
 
 export { Provider, translate, formatDate, Translation, withI18n };
