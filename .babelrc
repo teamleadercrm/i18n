@@ -5,6 +5,7 @@
     "@babel/plugin-proposal-export-default-from",
     "@babel/plugin-proposal-export-namespace-from",
     "babel-plugin-transform-imports",
+    "@babel/plugin-syntax-dynamic-import",
     "transform-react-remove-prop-types"
   ],
   "presets": [
