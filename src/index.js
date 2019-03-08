@@ -138,7 +138,7 @@ class Provider extends React.PureComponent<Props, State> {
     return locale.split('-')[0];
   }
 
-  async getLocaleData(locale: string): Array<Object> {
+  async getLocaleData(locale: string): Promise<Array<Object>> {
     const language = this.localeToLanguage(locale);
 
     const module = await import(`react-intl/locale-data/${language}`);
