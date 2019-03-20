@@ -16,7 +16,7 @@ Wrap your app with the `Provider`.
 import { Provider as I18nProvider } from '@teamleader/i18n';
 
 const App = () => (
-  <I18nProvider namespace="domains.invoicing" path="/" language="en">
+  <I18nProvider namespace="domains.invoicing" path="/" locale="en">
     <TheRestOfYourApp />
   </I18nProvider>
 );
@@ -56,9 +56,9 @@ You can configure the `Provider` with a few props.
 
 The translation keys will be prefixed with the namespace. For example, if your namespace is `invoicing`, an example translation key would be `invoicing.myTranslationKey`.
 
-### `language` String (optional)
+### `locale` String (optional)
 
-The language that should be used. If you don't provide a language, it will try go get the language from the html element (`<html lang="en">`) and will fallback to english (`en`);
+The locale that should be used. If you don't provide a locale it will try to get it from the html element (`<html lang="en">`) and will fallback to english (`en`);
 
 ### `path`: String | Function (optional)
 
