@@ -66,6 +66,10 @@ The path to the translation files. This can be either a string or a function. If
 
 Example with a string:
 
+### `debug`: Boolean (optional)
+
+When this is set to `true` the message IDs will be shown instead of the actual translations.
+
 ```js
 import { Provider as I18nProvider } from '@teamleader/i18n';
 
