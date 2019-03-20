@@ -1,3 +1,9 @@
+## [2.2.0] - 2019-03-20
+
+### Added
+
+- Add a debug mode which, when enabled, will print the translation IDs instead of the actual translations. 
+
 ## [2.1.0] - 2019-03-08
 
 ### Changed
