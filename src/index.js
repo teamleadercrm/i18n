@@ -27,6 +27,7 @@ type Props = {
   children: any,
   namespace: ?string,
   locale: ?string,
+  debug: ?boolean,
   path: string | (string => string),
 };
 
@@ -41,9 +42,11 @@ class Provider extends React.PureComponent<Props, State> {
 
   async componentDidMount() {
     const locale = this.getUserLocale();
+    const { debug } = this.props;
     const localeData = await this.getLocaleData(locale);
 
     addLocaleData(localeData);
+
     const translations = await this.fetchTranslations(locale);
 
     const component = React.createElement(IntlProvider, {
@@ -56,6 +59,10 @@ class Provider extends React.PureComponent<Props, State> {
         }
 
         const { intl } = element.getChildContext();
+
+        if (debug === true) {
+          intl.formatMessage = ({ id }) => id;
+        }
 
         const provideIntlContext = (
           Component: React.ComponentType<any>,
