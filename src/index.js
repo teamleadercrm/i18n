@@ -102,7 +102,7 @@ class Provider extends React.PureComponent<Props, State> {
 
         const provideIntlContext = (
           Component: React.ComponentType<any>,
-          getTranslationId: ?Function,
+          mapProps: ?(Object) => Object
         ): React.ComponentType<any> => {
           class IntlComponent extends React.PureComponent<{ id: string }> {
             static childContextTypes = {
@@ -114,8 +114,7 @@ class Provider extends React.PureComponent<Props, State> {
             }
 
             render() {
-              const { id, ...others } = this.props;
-              return <Component {...others} id={getTranslationId ? getTranslationId(id) : id} />;
+              return <Component {...(mapProps ? mapProps(this.props) : this.props)} />;
             }
           }
 
@@ -124,7 +123,11 @@ class Provider extends React.PureComponent<Props, State> {
 
         translate = (id: string, values: ?Object): string =>
           intl.formatMessage({ id: this.getTranslationId(id) }, values);
-        Translation = provideIntlContext(ReactIntlFormattedMessage, this.getTranslationId);
+
+        Translation = provideIntlContext(ReactIntlFormattedMessage, props => ({
+          ...props,
+          id: props.id && this.getTranslationId(props.id),
+        }));
 
         formatDate = intl.formatDate;
         FormattedDate = provideIntlContext(ReactIntlFormattedDate);
