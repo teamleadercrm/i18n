@@ -1,3 +1,28 @@
+## [3.0.0] - 2019-04-01
+
+### Added
+
+- Export wrapped FormattedDate from react-intl
+- Export wrapped FormattedTime from react-intl
+- Export wrapped FormattedRelative from react-intl
+- Export wrapped FormattedNumber from react-intl
+- Export wrapped FormattedPlural from react-intl
+- Export wrapped FormattedHtmlMessage from react-intl
+- Export and inject formatPlural into 'withI18n' from react-intl
+- Export and inject formatTime into 'withI18n' from react-intl
+- Export and inject formatHtmlMessage into 'withI18n' from react-intl
+- Export and inject formatNumber into 'withI18n' from react-intl
+- Export and inject formatRelative into 'withI18n' from react-intl
+
+### Changed
+
+- Map translationId for the Translation component through a mapProps function
+
+### Breaking
+
+- Exported type Translate has been renamed to StringFormatter
+- Exported type FormatDate has been renamed to Formatter
+
 ## [2.2.0] - 2019-03-20
 
 ### Added
