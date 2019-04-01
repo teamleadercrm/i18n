@@ -3,20 +3,56 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import PropTypes from 'prop-types';
-import { IntlProvider, addLocaleData, FormattedMessage } from 'react-intl';
+import {
+  IntlProvider,
+  addLocaleData,
+  FormattedMessage as ReactIntlFormattedMessage,
+  FormattedDate as ReactIntlFormattedDate,
+  FormattedTime as ReactIntlFormattedTime,
+  FormattedRelative as ReactIntlFormattedRelative,
+  FormattedNumber as ReactIntlFormattedNumber,
+  FormattedPlural as ReactIntlFormattedPlural,
+  FormattedHtmlMessage as ReactIntlFormattedHtmlMessage,
+} from 'react-intl';
 import NotInitialisedError from './NotInitialisedError';
 import supportedLocales from './supportedLocales.json';
 
 let translate = NotInitialisedError;
-let formatDate = NotInitialisedError;
 let Translation = NotInitialisedError;
+
+let formatDate = NotInitialisedError;
+let FormattedDate = NotInitialisedError;
+
+let formatTime = NotInitialisedError;
+let FormattedTime = NotInitialisedError;
+
+let formatRelative = NotInitialisedError;
+let FormattedRelative = NotInitialisedError;
+
+let formatNumber = NotInitialisedError;
+let FormattedNumber = NotInitialisedError;
+
+let formatPlural = NotInitialisedError;
+let FormattedPlural = NotInitialisedError;
+
+let formatHtmlMessage = NotInitialisedError;
+let FormattedHtmlMessage = NotInitialisedError;
 
 const FALLBACK_LOCALE = 'en-GB';
 
 const withI18n = (Component: any) => {
   class WithI18nComponent extends React.PureComponent<any> {
     render() {
-      return <Component {...this.props} translate={translate} formatDate={formatDate} />;
+      return <Component
+        {...this.props}
+        translate={translate}
+        formatDate={formatDate}
+        formatTime={formatTime}
+        formatRelative={formatRelative}
+        formatNumber={formatNumber}
+        formatPlural={formatPlural}
+        formatHtmlMessage={formatHtmlMessage}
+      />;
     }
   }
 
@@ -66,7 +102,7 @@ class Provider extends React.PureComponent<Props, State> {
 
         const provideIntlContext = (
           Component: React.ComponentType<any>,
-          getTranslationId: Function,
+          getTranslationId: ?Function,
         ): React.ComponentType<any> => {
           class IntlComponent extends React.PureComponent<{ id: string }> {
             static childContextTypes = {
@@ -79,7 +115,7 @@ class Provider extends React.PureComponent<Props, State> {
 
             render() {
               const { id, ...others } = this.props;
-              return <Component {...others} id={getTranslationId(id)} />;
+              return <Component {...others} id={getTranslationId ? getTranslationId(id) : id} />;
             }
           }
 
@@ -88,8 +124,25 @@ class Provider extends React.PureComponent<Props, State> {
 
         translate = (id: string, values: ?Object): string =>
           intl.formatMessage({ id: this.getTranslationId(id) }, values);
+        Translation = provideIntlContext(ReactIntlFormattedMessage, this.getTranslationId);
+
         formatDate = intl.formatDate;
-        Translation = provideIntlContext(FormattedMessage, this.getTranslationId);
+        FormattedDate = provideIntlContext(ReactIntlFormattedDate);
+
+        formatTime = intl.formatTime;
+        FormattedTime = provideIntlContext(ReactIntlFormattedTime);
+
+        formatRelative = intl.formatRelative;
+        FormattedRelative = provideIntlContext(ReactIntlFormattedRelative);
+
+        formatNumber = intl.formatNumber;
+        FormattedNumber = provideIntlContext(ReactIntlFormattedNumber);
+
+        formatPlural = intl.formatPlural;
+        FormattedPlural = provideIntlContext(ReactIntlFormattedPlural);
+
+        formatHtmlMessage = intl.formatHtmlMessage;
+        FormattedHtmlMessage = provideIntlContext(ReactIntlFormattedHtmlMessage);
 
         this.setState({ loaded: true });
       },
@@ -170,11 +223,33 @@ class Provider extends React.PureComponent<Props, State> {
   }
 }
 
-export type Translate = (id: string, values?: {}) => string;
-export type FormatDate = (value: any, options?: {}) => string;
+export type StringFormatter = (id: string, values?: {}) => string;
+export type Formatter = (value: any, options?: {}) => string;
 export type WithI18nProps = {
-  translate: Translate,
-  formatDate: FormatDate,
+  translate: StringFormatter,
+  formatDate: Formatter,
+  formatTime: Formatter,
+  formatRelative: Formatter,
+  formatNumber: Formatter,
+  formatPlural: Formatter,
+  formatHtmlMessage: StringFormatter,
 };
 
-export { Provider, translate, formatDate, Translation, withI18n };
+export {
+  Provider,
+  translate,
+  formatDate,
+  Translation,
+  withI18n,
+  FormattedDate,
+  formatTime,
+  FormattedTime,
+  formatRelative,
+  FormattedRelative,
+  formatNumber,
+  FormattedNumber,
+  formatPlural,
+  FormattedPlural,
+  formatHtmlMessage,
+  FormattedHtmlMessage,
+};
