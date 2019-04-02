@@ -4,3 +4,4 @@ src
 .prettierrc
 .flowconfig
 .idea
+.vscode
