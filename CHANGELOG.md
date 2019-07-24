@@ -1,3 +1,15 @@
+## [3.0.1] - 2019-07-24
+
+### Security
+
+- Minor update of @babel/cli
+- Minor update of @babel/core
+- Minor update of @babel/plugin-proposal-class-properties
+- Minor update of @babel/plugin-proposal-export-default-from
+- Minor update of @babel/plugin-proposal-export-namespace-from
+- Minor update of @babel/plugin-proposal-object-rest-spread
+- Minor update of @babel/preset-env
+
 ## [3.0.0] - 2019-04-01
 
 ### Added
@@ -27,7 +39,7 @@
 
 ### Added
 
-- Add a debug mode which, when enabled, will print the translation IDs instead of the actual translations. 
+- Add a debug mode which, when enabled, will print the translation IDs instead of the actual translations.
 
 ## [2.1.0] - 2019-03-08
 
