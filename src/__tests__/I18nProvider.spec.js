@@ -196,12 +196,6 @@ describe('I18nProvider', () => {
       }),
     );
 
-    class Child extends React.Component {
-      render() {
-        return <>{'foo'}</>;
-      }
-    }
-
     const rendered = mount(<I18nProvider locale="ta"></I18nProvider>);
 
     process.nextTick(() => {
@@ -221,12 +215,6 @@ describe('I18nProvider', () => {
         'domain.bar': 'baz',
       }),
     );
-
-    class Child extends React.Component {
-      render() {
-        return <>{'foo'}</>;
-      }
-    }
 
     const rendered = mount(<I18nProvider locale="ta" namespace="domain"></I18nProvider>);
 
