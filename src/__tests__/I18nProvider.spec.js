@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import I18nProvider, { translate } from '../I18nProvider';
+import I18nProvider, { translate, Translation } from '../I18nProvider';
 import { injectIntl } from 'react-intl';
 
 describe('I18nProvider', () => {
@@ -241,6 +241,30 @@ describe('I18nProvider', () => {
       rendered.update();
 
       expect(translate('foo')).toEqual('domain.foo');
+
+      global.fetch.mockClear();
+      done();
+    });
+  });
+
+  it('translates with considering debug mode', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        foo: 'Hello, {name}!',
+      }),
+    );
+
+    const rendered = mount(
+      <I18nProvider locale="ta" debug={true}>
+        <Translation id="foo" values={{ name: <b>World</b> }} />
+      </I18nProvider>,
+    );
+
+    process.nextTick(() => {
+      rendered.update();
+
+      expect(rendered.children.length).toBe(1);
+      expect(rendered.children().html()).toEqual('Hello, <b>World</b>!');
 
       global.fetch.mockClear();
       done();
