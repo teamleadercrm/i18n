@@ -33,6 +33,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.4.0",
     "flow-bin": "^0.79.1",
     "jest": "^24.9.0",
     "react": "^16.9.0",
