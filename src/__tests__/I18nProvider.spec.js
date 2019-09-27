@@ -1,8 +1,12 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import I18nProvider from '../I18nProvider';
 
 describe('I18nProvider', () => {
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
   it('renders the its children', () => {
     const rendered = mount(
       <I18nProvider>
@@ -23,5 +27,33 @@ describe('I18nProvider', () => {
     expect(rendered.state().locale).toEqual('ta');
     expect(rendered.state().messages).toEqual({});
     expect(rendered.state().isLoading).toEqual(true);
+  });
+
+  it('fetches translations and sets it to the state', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        foo: 'bar',
+        bar: 'baz',
+      }),
+    );
+
+    const wrapper = shallow(<I18nProvider path="/translations/" locale="en" />);
+
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith('/translations/en.json');
+
+    process.nextTick(() => {
+      expect(wrapper.state()).toEqual({
+        messages: {
+          foo: 'bar',
+          bar: 'baz',
+        },
+        isLoading: false,
+        locale: 'en',
+      });
+
+      global.fetch.mockClear();
+      done();
+    });
   });
 });
