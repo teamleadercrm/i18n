@@ -213,4 +213,30 @@ describe('I18nProvider', () => {
       done();
     });
   });
+
+  it('translates with considering namespaces', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        'domain.foo': 'bar',
+        'domain.bar': 'baz',
+      }),
+    );
+
+    class Child extends React.Component {
+      render() {
+        return <>{'foo'}</>;
+      }
+    }
+
+    const rendered = mount(<I18nProvider locale="ta" namespace="domain"></I18nProvider>);
+
+    process.nextTick(() => {
+      rendered.update();
+
+      expect(translate('foo')).toEqual('bar');
+
+      global.fetch.mockClear();
+      done();
+    });
+  });
 });
