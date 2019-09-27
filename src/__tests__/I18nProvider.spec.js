@@ -139,4 +139,52 @@ describe('I18nProvider', () => {
       done();
     });
   });
+
+  it('updates the react-intl props when locale changes', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        foo: 'bar',
+        bar: 'baz',
+      }),
+    );
+
+    class Child extends React.Component {
+      render() {
+        return <>{'foo'}</>;
+      }
+    }
+
+    const IntlChild = injectIntl(Child);
+
+    const rendered = mount(
+      <I18nProvider locale="ta">
+        <IntlChild />
+      </I18nProvider>,
+    );
+
+    process.nextTick(() => {
+      rendered.update();
+      const intl = rendered.find(Child).prop('intl');
+
+      expect(intl.messages).toEqual({
+        foo: 'bar',
+        bar: 'baz',
+      });
+
+      expect(intl.locale).toEqual('ta');
+
+      rendered.setState({
+        locale: 'en',
+        messages: {},
+      });
+
+      const updatedIntl = rendered.find(Child).prop('intl');
+
+      expect(updatedIntl.messages).toEqual({});
+      expect(updatedIntl.locale).toEqual('en');
+
+      global.fetch.mockClear();
+      done();
+    });
+  });
 });
