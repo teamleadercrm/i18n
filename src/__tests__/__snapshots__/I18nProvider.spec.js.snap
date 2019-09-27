@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`I18nProvider renders the its children 1`] = `ReactWrapper {}`;
+exports[`I18nProvider renders the its children 1`] = `
+<I18nProvider>
+  <div>
+    Hello World
+  </div>
+</I18nProvider>
+`;
