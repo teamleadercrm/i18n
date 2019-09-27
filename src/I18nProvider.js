@@ -24,6 +24,10 @@ class I18nProvider extends PureComponent {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return null;
+    }
+
     const cache = createIntlCache();
 
     const intl = createIntl(
