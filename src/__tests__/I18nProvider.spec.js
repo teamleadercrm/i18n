@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import I18nProvider from '../I18nProvider';
+import I18nProvider, { translate } from '../I18nProvider';
 import { injectIntl } from 'react-intl';
 
 describe('I18nProvider', () => {
@@ -182,6 +182,32 @@ describe('I18nProvider', () => {
 
       expect(updatedIntl.messages).toEqual({});
       expect(updatedIntl.locale).toEqual('en');
+
+      global.fetch.mockClear();
+      done();
+    });
+  });
+
+  it('translates without HoC', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        foo: 'bar',
+        bar: 'baz',
+      }),
+    );
+
+    class Child extends React.Component {
+      render() {
+        return <>{'foo'}</>;
+      }
+    }
+
+    const rendered = mount(<I18nProvider locale="ta"></I18nProvider>);
+
+    process.nextTick(() => {
+      rendered.update();
+
+      expect(translate('foo')).toEqual('bar');
 
       global.fetch.mockClear();
       done();
