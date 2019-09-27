@@ -36,6 +36,7 @@
     "enzyme-to-json": "^3.4.0",
     "flow-bin": "^0.79.1",
     "jest": "^24.9.0",
+    "jest-fetch-mock": "^2.1.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   }
