@@ -82,4 +82,37 @@ describe('withI18n', () => {
       done();
     });
   });
+
+  it('passed translate prop uses namespace', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        'domain.foo': 'bar',
+        'domain.bar': 'baz',
+      }),
+    );
+
+    class Child extends React.Component {
+      render() {
+        return <>{'foo'}</>;
+      }
+    }
+
+    const IntlChild = withI18n(Child);
+
+    const rendered = mount(
+      <I18nProvider locale="ta" namespace="domain">
+        <IntlChild />
+      </I18nProvider>,
+    );
+
+    process.nextTick(() => {
+      rendered.update();
+      const translate = rendered.find(Child).prop('translate');
+
+      expect(translate('foo')).toEqual('bar');
+
+      global.fetch.mockClear();
+      done();
+    });
+  });
 });
