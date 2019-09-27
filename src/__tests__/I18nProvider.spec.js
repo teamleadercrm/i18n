@@ -56,4 +56,23 @@ describe('I18nProvider', () => {
       done();
     });
   });
+
+  it('fetches translations with path as a function and sets it to the state', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        foo: 'bar',
+        bar: 'baz',
+      }),
+    );
+
+    const getPath = language => `${language}.hash.json`;
+
+    shallow(<I18nProvider path={getPath} locale="en" />);
+
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledWith('en.hash.json');
+
+    global.fetch.mockClear();
+    done();
+  });
 });
