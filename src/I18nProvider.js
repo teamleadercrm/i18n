@@ -1,9 +1,11 @@
 import { PureComponent } from 'react';
 import { getTranslationPath } from './utils';
 
+export const FALLBACK_LANGUAGE = 'en';
+
 class I18nProvider extends PureComponent {
   state = {
-    locale: this.props.locale,
+    locale: this.props.locale || FALLBACK_LANGUAGE,
     messages: {},
     isLoading: true,
   };
