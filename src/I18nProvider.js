@@ -1,4 +1,5 @@
 import { PureComponent } from 'react';
+import { getTranslationPath } from './utils';
 
 class I18nProvider extends PureComponent {
   state = {
@@ -9,7 +10,7 @@ class I18nProvider extends PureComponent {
 
   async componentDidMount() {
     try {
-      const response = await fetch(this.props.path + `${this.props.locale}.json`);
+      const response = await fetch(getTranslationPath(this.props.path, this.props.locale));
       const translations = await response.json();
       this.setState({
         isLoading: false,
