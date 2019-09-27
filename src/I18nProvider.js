@@ -1,4 +1,6 @@
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
+
 import { getTranslationPath } from './utils';
 
 export const FALLBACK_LANGUAGE = 'en';
@@ -22,7 +24,16 @@ class I18nProvider extends PureComponent {
   }
 
   render() {
-    return this.props.children;
+    const cache = createIntlCache();
+
+    const intl = createIntl(
+      {
+        locale: this.state.locale,
+        messages: this.state.messages,
+      },
+      cache,
+    );
+    return <RawIntlProvider value={intl}>{this.props.children}</RawIntlProvider>;
   }
 }
 
