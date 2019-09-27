@@ -37,7 +37,7 @@ class I18nProvider extends PureComponent {
     );
 
     translate = (id, values) => {
-      this.props.intl.formatMessage({ id: id }, values);
+      return intl.formatMessage({ id: id }, values);
     };
 
     return intl;
