@@ -8,12 +8,25 @@ describe('I18nProvider', () => {
     fetch.resetMocks();
   });
 
+  it('renders nothing if its loading', () => {
+    const rendered = mount(
+      <I18nProvider>
+        <div>Hello World</div>
+      </I18nProvider>,
+    );
+
+    expect(rendered.children().length).toBe(0);
+  });
+
   it('renders the its children', () => {
     const rendered = mount(
       <I18nProvider>
         <div>Hello World</div>
       </I18nProvider>,
     );
+    rendered.setState({
+      isLoading: false,
+    });
     expect(rendered.children().length).toBe(1);
     expect(rendered).toMatchSnapshot();
   });
