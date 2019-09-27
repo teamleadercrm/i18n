@@ -29,6 +29,18 @@ describe('I18nProvider', () => {
     expect(rendered.state().isLoading).toEqual(true);
   });
 
+  it('intializes with fallback language if no locale provided', () => {
+    const rendered = mount(
+      <I18nProvider>
+        <div>Hello World</div>
+      </I18nProvider>,
+    );
+
+    expect(rendered.state().locale).toEqual('en');
+    expect(rendered.state().messages).toEqual({});
+    expect(rendered.state().isLoading).toEqual(true);
+  });
+
   it('fetches translations and sets it to the state', done => {
     fetch.mockResponseOnce(
       JSON.stringify({
