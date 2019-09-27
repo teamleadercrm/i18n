@@ -43,4 +43,43 @@ describe('withI18n', () => {
       done();
     });
   });
+
+  it('passed translate prop returns translated string', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        foo: 'bar',
+        bar: 'baz',
+      }),
+    );
+
+    class Child extends React.Component {
+      render() {
+        return <>{'foo'}</>;
+      }
+    }
+
+    const IntlChild = withI18n(Child);
+
+    const rendered = mount(
+      <I18nProvider locale="ta">
+        <IntlChild />
+      </I18nProvider>,
+    );
+
+    process.nextTick(() => {
+      rendered.update();
+      const intl = rendered.find(Child).prop('intl');
+      const translate = rendered.find(Child).prop('translate');
+
+      expect(intl.messages).toEqual({
+        foo: 'bar',
+        bar: 'baz',
+      });
+
+      expect(translate('foo')).toEqual('bar');
+
+      global.fetch.mockClear();
+      done();
+    });
+  });
 });
