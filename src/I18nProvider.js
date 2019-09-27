@@ -23,21 +23,24 @@ class I18nProvider extends PureComponent {
     } catch (error) {}
   }
 
-  render() {
-    if (this.state.isLoading) {
-      return null;
-    }
-
+  getIntl() {
     const cache = createIntlCache();
 
-    const intl = createIntl(
+    return createIntl(
       {
         locale: this.state.locale,
         messages: this.state.messages,
       },
       cache,
     );
-    return <RawIntlProvider value={intl}>{this.props.children}</RawIntlProvider>;
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      return null;
+    }
+
+    return <RawIntlProvider value={this.getIntl()}>{this.props.children}</RawIntlProvider>;
   }
 }
 
