@@ -37,8 +37,10 @@ class I18nProvider extends PureComponent {
     );
 
     translate = (id, values) => {
-      const { namespace } = this.props;
+      const { namespace, debug } = this.props;
       const namespacedId = namespace ? [namespace, id].join('.') : id;
+
+      if (debug) return namespacedId;
 
       return intl.formatMessage({ id: namespacedId }, values);
     };
