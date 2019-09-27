@@ -7,6 +7,17 @@ class I18nProvider extends PureComponent {
     isLoading: true,
   };
 
+  async componentDidMount() {
+    try {
+      const response = await fetch(this.props.path + `${this.props.locale}.json`);
+      const translations = await response.json();
+      this.setState({
+        isLoading: false,
+        messages: translations,
+      });
+    } catch (error) {}
+  }
+
   render() {
     return this.props.children;
   }
