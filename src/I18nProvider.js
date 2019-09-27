@@ -5,6 +5,8 @@ import { getTranslationPath } from './utils';
 
 export const FALLBACK_LANGUAGE = 'en';
 
+let translate = undefined;
+
 class I18nProvider extends PureComponent {
   state = {
     locale: this.props.locale || FALLBACK_LANGUAGE,
@@ -26,13 +28,19 @@ class I18nProvider extends PureComponent {
   getIntl() {
     const cache = createIntlCache();
 
-    return createIntl(
+    const intl = createIntl(
       {
         locale: this.state.locale,
         messages: this.state.messages,
       },
       cache,
     );
+
+    translate = (id, values) => {
+      this.props.intl.formatMessage({ id: id }, values);
+    };
+
+    return intl;
   }
 
   render() {
@@ -45,3 +53,4 @@ class I18nProvider extends PureComponent {
 }
 
 export default I18nProvider;
+export { translate };
