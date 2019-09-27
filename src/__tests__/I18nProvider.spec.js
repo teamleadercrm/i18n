@@ -227,4 +227,23 @@ describe('I18nProvider', () => {
       done();
     });
   });
+
+  it('translates with considering debug mode', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        'domain.foo': 'bar',
+      }),
+    );
+
+    const rendered = mount(<I18nProvider locale="ta" namespace="domain" debug={true}></I18nProvider>);
+
+    process.nextTick(() => {
+      rendered.update();
+
+      expect(translate('foo')).toEqual('domain.foo');
+
+      global.fetch.mockClear();
+      done();
+    });
+  });
 });
