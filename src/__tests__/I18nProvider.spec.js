@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import I18nProvider from '../I18nProvider';
+import { injectIntl } from 'react-intl';
 
 describe('I18nProvider', () => {
   beforeEach(() => {
@@ -86,5 +87,43 @@ describe('I18nProvider', () => {
 
     global.fetch.mockClear();
     done();
+  });
+
+  it('passes the react-intl props', done => {
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        foo: 'bar',
+        bar: 'baz',
+      }),
+    );
+
+    class Child extends React.Component {
+      render() {
+        return <>{'foo'}</>;
+      }
+    }
+
+    const IntlChild = injectIntl(Child);
+
+    const rendered = mount(
+      <I18nProvider locale="ta">
+        <IntlChild />
+      </I18nProvider>,
+    );
+
+    process.nextTick(() => {
+      rendered.update();
+      const intl = rendered.find(Child).prop('intl');
+
+      expect(intl.messages).toEqual({
+        foo: 'bar',
+        bar: 'baz',
+      });
+
+      expect(intl.locale).toEqual('ta');
+
+      global.fetch.mockClear();
+      done();
+    });
   });
 });
