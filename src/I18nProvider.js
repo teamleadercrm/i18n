@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
+import { createIntl, createIntlCache, RawIntlProvider, FormattedMessage } from 'react-intl';
 
 import { getTranslationPath } from './utils';
 
@@ -57,5 +57,7 @@ class I18nProvider extends PureComponent {
   }
 }
 
+const Translation = FormattedMessage;
+
 export default I18nProvider;
-export { translate };
+export { translate, Translation };
