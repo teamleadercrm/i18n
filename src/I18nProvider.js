@@ -26,6 +26,10 @@ class I18nProvider extends PureComponent {
     } catch (error) {}
   }
 
+  componentWillUnmount() {
+    translate = NotInitialisedError;
+  }
+
   getIntl() {
     const cache = createIntlCache();
 
