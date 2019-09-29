@@ -4,12 +4,19 @@ import I18nProvider, { translate, Translation } from '../I18nProvider';
 import { injectIntl } from 'react-intl';
 
 describe('I18nProvider', () => {
+  let rendered;
+
   beforeEach(() => {
     fetch.resetMocks();
+    rendered = null;
+  });
+
+  afterEach(() => {
+    rendered && rendered.unmount();
   });
 
   it('renders nothing if its loading', () => {
-    const rendered = mount(
+    rendered = mount(
       <I18nProvider>
         <div>Hello World</div>
       </I18nProvider>,
@@ -19,7 +26,7 @@ describe('I18nProvider', () => {
   });
 
   it('renders the its children', () => {
-    const rendered = mount(
+    rendered = mount(
       <I18nProvider>
         <div>Hello World</div>
       </I18nProvider>,
@@ -32,7 +39,7 @@ describe('I18nProvider', () => {
   });
 
   it('intializes with locale passed as prop', () => {
-    const rendered = mount(
+    rendered = mount(
       <I18nProvider locale="ta">
         <div>Hello World</div>
       </I18nProvider>,
@@ -44,7 +51,7 @@ describe('I18nProvider', () => {
   });
 
   it('intializes with fallback language if no locale provided', () => {
-    const rendered = mount(
+    rendered = mount(
       <I18nProvider>
         <div>Hello World</div>
       </I18nProvider>,
@@ -118,7 +125,7 @@ describe('I18nProvider', () => {
 
     const IntlChild = injectIntl(Child);
 
-    const rendered = mount(
+    rendered = mount(
       <I18nProvider locale="ta">
         <IntlChild />
       </I18nProvider>,
@@ -156,7 +163,7 @@ describe('I18nProvider', () => {
 
     const IntlChild = injectIntl(Child);
 
-    const rendered = mount(
+    rendered = mount(
       <I18nProvider locale="ta">
         <IntlChild />
       </I18nProvider>,
@@ -196,7 +203,7 @@ describe('I18nProvider', () => {
       }),
     );
 
-    const rendered = mount(<I18nProvider locale="ta"></I18nProvider>);
+    rendered = mount(<I18nProvider locale="ta"></I18nProvider>);
 
     process.nextTick(() => {
       rendered.update();
@@ -216,7 +223,7 @@ describe('I18nProvider', () => {
       }),
     );
 
-    const rendered = mount(<I18nProvider locale="ta" namespace="domain"></I18nProvider>);
+    rendered = mount(<I18nProvider locale="ta" namespace="domain"></I18nProvider>);
 
     process.nextTick(() => {
       rendered.update();
@@ -235,7 +242,7 @@ describe('I18nProvider', () => {
       }),
     );
 
-    const rendered = mount(<I18nProvider locale="ta" namespace="domain" debug={true}></I18nProvider>);
+    rendered = mount(<I18nProvider locale="ta" namespace="domain" debug={true}></I18nProvider>);
 
     process.nextTick(() => {
       rendered.update();
@@ -254,7 +261,7 @@ describe('I18nProvider', () => {
       }),
     );
 
-    const rendered = mount(
+    rendered = mount(
       <I18nProvider locale="ta" debug={true}>
         <Translation id="foo" values={{ name: <b>World</b> }} />
       </I18nProvider>,
