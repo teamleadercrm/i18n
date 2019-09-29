@@ -215,6 +215,10 @@ describe('I18nProvider', () => {
     });
   });
 
+  it('can not translate without provider', () => {
+    expect(translate).toThrowError('Initialize i18n with the Provider before calling any internationalization methods');
+  });
+
   it('translates with considering namespaces', done => {
     fetch.mockResponseOnce(
       JSON.stringify({
