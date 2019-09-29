@@ -247,7 +247,7 @@ describe('I18nProvider', () => {
     });
   });
 
-  it('translates with considering debug mode', done => {
+  it('translates using <Translation />', done => {
     fetch.mockResponseOnce(
       JSON.stringify({
         foo: 'Hello, {name}!',
