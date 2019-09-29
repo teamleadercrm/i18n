@@ -2,10 +2,11 @@ import React, { PureComponent } from 'react';
 import { createIntl, createIntlCache, RawIntlProvider, FormattedMessage } from 'react-intl';
 
 import { getTranslationPath } from './utils';
+import NotInitialisedError from './NotInitialisedError';
 
 export const FALLBACK_LANGUAGE = 'en';
 
-let translate = undefined;
+let translate = NotInitialisedError;
 
 class I18nProvider extends PureComponent {
   state = {
