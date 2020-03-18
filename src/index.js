@@ -4,55 +4,47 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 import {
+  createIntl,
+  createIntlCache,
+  RawIntlProvider,
   IntlProvider,
   addLocaleData,
-  FormattedMessage as ReactIntlFormattedMessage,
-  FormattedDate as ReactIntlFormattedDate,
-  FormattedTime as ReactIntlFormattedTime,
-  FormattedRelative as ReactIntlFormattedRelative,
-  FormattedNumber as ReactIntlFormattedNumber,
-  FormattedPlural as ReactIntlFormattedPlural,
-  FormattedHtmlMessage as ReactIntlFormattedHtmlMessage,
+  FormattedMessage,
+  FormattedDate,
+  FormattedTime,
+  FormattedRelative,
+  FormattedNumber,
+  FormattedPlural,
 } from 'react-intl';
-import NotInitialisedError from './NotInitialisedError';
+import NotInitialisedError, { createNonInitialisedError } from './NotInitialisedError';
 import supportedLocales from './supportedLocales.json';
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-relativetimeformat/polyfill';
 
-let translate = NotInitialisedError;
-let Translation = NotInitialisedError;
-
-let formatDate = NotInitialisedError;
-let FormattedDate = NotInitialisedError;
-
-let formatTime = NotInitialisedError;
-let FormattedTime = NotInitialisedError;
-
-let formatRelative = NotInitialisedError;
-let FormattedRelative = NotInitialisedError;
-
-let formatNumber = NotInitialisedError;
-let FormattedNumber = NotInitialisedError;
-
-let formatPlural = NotInitialisedError;
-let FormattedPlural = NotInitialisedError;
-
-let formatHtmlMessage = NotInitialisedError;
-let FormattedHtmlMessage = NotInitialisedError;
+let translate = createNonInitialisedError('translate');
+let Translation = createNonInitialisedError('Translation');
+let formatDate = createNonInitialisedError('formatDate');
+let formatTime = createNonInitialisedError('formatTime');
+let formatRelative = createNonInitialisedError('formatRelative');
+let formatNumber = createNonInitialisedError('formatNumber');
+let formatPlural = createNonInitialisedError('formatPlural');
 
 const FALLBACK_LOCALE = 'en-GB';
 
 const withI18n = (Component: any) => {
   class WithI18nComponent extends React.PureComponent<any> {
     render() {
-      return <Component
-        {...this.props}
-        translate={translate}
-        formatDate={formatDate}
-        formatTime={formatTime}
-        formatRelative={formatRelative}
-        formatNumber={formatNumber}
-        formatPlural={formatPlural}
-        formatHtmlMessage={formatHtmlMessage}
-      />;
+      return (
+        <Component
+          {...this.props}
+          translate={translate}
+          formatDate={formatDate}
+          formatTime={formatTime}
+          formatRelative={formatRelative}
+          formatNumber={formatNumber}
+          formatPlural={formatPlural}
+        />
+      );
     }
   }
 
