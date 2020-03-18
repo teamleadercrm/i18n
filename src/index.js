@@ -70,7 +70,7 @@ class Provider extends React.PureComponent<Props, State> {
     const locale = this.getUserLocale();
     const { debug } = this.props;
 
-    await this.setLocalData(locale);
+    await this.setLocaleData(locale);
 
     const translations = await this.fetchTranslations(locale);
 
@@ -142,7 +142,7 @@ class Provider extends React.PureComponent<Props, State> {
     return locale.split('-')[0];
   }
 
-  async setLocalData(locale: string): Promise<Array<Object>> {
+  async setLocaleData(locale: string): Promise<Array<Object>> {
     if (!Intl.PluralRules) {
       if (locale === 'tlh-KL') {
         await import(`@formatjs/intl-pluralrules/dist/locale-data/en`);
