@@ -8,7 +8,6 @@ import {
   createIntlCache,
   RawIntlProvider,
   IntlProvider,
-  addLocaleData,
   FormattedMessage,
   FormattedDate,
   FormattedTime,
@@ -71,9 +70,8 @@ class Provider extends React.PureComponent<Props, State> {
   async componentDidMount() {
     const locale = this.getUserLocale();
     const { debug } = this.props;
-    const localeData = await this.getLocaleData(locale);
 
-    addLocaleData(localeData);
+    await this.setLocalData(locale);
 
     const translations = await this.fetchTranslations(locale);
 
@@ -193,20 +191,22 @@ class Provider extends React.PureComponent<Props, State> {
     return locale.split('-')[0];
   }
 
-  async getLocaleData(locale: string): Promise<Array<Object>> {
-    const language = this.localeToLanguage(locale);
-
-    const module = await import(`react-intl/locale-data/${language}`);
-    const localeData = module.default;
-
-    if (locale === 'tlh-KL') {
-      localeData.push({
-        locale: 'tlh',
-        parentLocale: 'en',
-      });
+  async setLocalData(locale: string): Promise<Array<Object>> {
+    if (!Intl.PluralRules) {
+      if (locale === 'tlh-KL') {
+        await import(`@formatjs/intl-pluralrules/dist/locale-data/en`);
+      } else {
+        await import(`@formatjs/intl-pluralrules/dist/locale-data/${language}`);
+      }
     }
 
-    return localeData;
+    if (!Intl.RelativeTimeFormat) {
+      if (locale === 'tlh-KL') {
+        await import(`@formatjs/intl-relativetimeformat/dist/locale-data/en`);
+      } else {
+        await import(`@formatjs/intl-relativetimeformat/dist/locale-data/${language}`);
+      }
+    }
   }
 
   render() {
