@@ -58,13 +58,12 @@ type Props = {
 };
 
 type State = {
-  loaded: boolean,
   intl: any,
 };
 
 class Provider extends React.PureComponent<Props, State> {
   state = {
-    loaded: false,
+    intl: null,
   };
 
   async componentDidMount() {
