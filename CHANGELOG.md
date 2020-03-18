@@ -1,3 +1,9 @@
+## [4.0.0] - 2020-03-18
+
+### Changed
+
+- Major upgrade of react-intl to support HTML formatted messages ([@sanderbrugge](https://github.com/sanderbrugge) in [#13](https://github.com/teamleadercrm/i18n/pull/13))
+
 ## [3.0.1] - 2019-07-24
 
 ### Security
