@@ -1,5 +1,4 @@
 // @flow
-
 import * as React from 'react';
 import { render } from 'react-dom';
 import PropTypes from 'prop-types';
@@ -60,6 +59,7 @@ type Props = {
 
 type State = {
   loaded: boolean,
+  intl: any,
 };
 
 class Provider extends React.PureComponent<Props, State> {
@@ -75,73 +75,25 @@ class Provider extends React.PureComponent<Props, State> {
 
     const translations = await this.fetchTranslations(locale);
 
-    const component = React.createElement(IntlProvider, {
-      messages: translations,
-      children: React.createElement('div'),
-      locale,
-      ref: (element: ?React.Component<typeof IntlProvider>) => {
-        if (!element) {
-          return;
-        }
-
-        const { intl } = element.getChildContext();
-
-        if (debug === true) {
-          intl.formatMessage = ({ id }) => id;
-        }
-
-        const provideIntlContext = (
-          Component: React.ComponentType<any>,
-          mapProps: ?(Object) => Object
-        ): React.ComponentType<any> => {
-          class IntlComponent extends React.PureComponent<{ id: string }> {
-            static childContextTypes = {
-              intl: PropTypes.object,
-            };
-
-            getChildContext() {
-              return { intl };
-            }
-
-            render() {
-              return <Component {...(mapProps ? mapProps(this.props) : this.props)} />;
-            }
-          }
-
-          return IntlComponent;
-        };
-
-        translate = (id: string, values: ?Object): string =>
-          intl.formatMessage({ id: this.getTranslationId(id) }, values);
-
-        Translation = provideIntlContext(ReactIntlFormattedMessage, props => ({
-          ...props,
-          id: props.id && this.getTranslationId(props.id),
-        }));
-
-        formatDate = intl.formatDate;
-        FormattedDate = provideIntlContext(ReactIntlFormattedDate);
-
-        formatTime = intl.formatTime;
-        FormattedTime = provideIntlContext(ReactIntlFormattedTime);
-
-        formatRelative = intl.formatRelative;
-        FormattedRelative = provideIntlContext(ReactIntlFormattedRelative);
-
-        formatNumber = intl.formatNumber;
-        FormattedNumber = provideIntlContext(ReactIntlFormattedNumber);
-
-        formatPlural = intl.formatPlural;
-        FormattedPlural = provideIntlContext(ReactIntlFormattedPlural);
-
-        formatHtmlMessage = intl.formatHtmlMessage;
-        FormattedHtmlMessage = provideIntlContext(ReactIntlFormattedHtmlMessage);
-
-        this.setState({ loaded: true });
+    const cache = createIntlCache();
+    const intl = createIntl(
+      {
+        locale: locale === 'tlh-KL' ? 'en' : locale,
+        messages: translations,
       },
-    });
+      cache,
+    );
 
-    render(component, document.createElement('div'));
+    formatDate = intl.formatDate;
+    formatTime = intl.formatTime;
+    formatRelative = intl.formatRelative;
+    formatNumber = intl.formatNumber;
+    formatPlural = intl.formatPlural;
+
+    translate = (id: string, values: ?Object): string => intl.formatMessage({ id: this.getTranslationId(id) }, values);
+    Translation = props => <FormattedMessage {...props} id={props.id && this.getTranslationId(props.id)} />;
+
+    this.setState({ intl });
   }
 
   getTranslationId = (id: string): string => {
@@ -210,11 +162,11 @@ class Provider extends React.PureComponent<Props, State> {
   }
 
   render() {
-    if (!this.state.loaded) {
+    if (!this.state.intl) {
       return null;
     }
 
-    return this.props.children;
+    return <RawIntlProvider value={this.state.intl}>{this.props.children}</RawIntlProvider>;
   }
 }
 
@@ -227,7 +179,6 @@ export type WithI18nProps = {
   formatRelative: Formatter,
   formatNumber: Formatter,
   formatPlural: Formatter,
-  formatHtmlMessage: StringFormatter,
 };
 
 export {
@@ -245,6 +196,5 @@ export {
   FormattedNumber,
   formatPlural,
   FormattedPlural,
-  formatHtmlMessage,
-  FormattedHtmlMessage,
+  FormattedMessage,
 };
