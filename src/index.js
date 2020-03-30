@@ -10,7 +10,7 @@ import {
   FormattedMessage,
   FormattedDate,
   FormattedTime,
-  FormattedRelative,
+  FormattedRelativeTime,
   FormattedNumber,
   FormattedPlural,
 } from 'react-intl';
@@ -23,7 +23,7 @@ let translate = createNonInitialisedError('translate');
 let Translation = createNonInitialisedError('Translation');
 let formatDate = createNonInitialisedError('formatDate');
 let formatTime = createNonInitialisedError('formatTime');
-let formatRelative = createNonInitialisedError('formatRelative');
+let formatRelativeTime = createNonInitialisedError('formatRelativeTime');
 let formatNumber = createNonInitialisedError('formatNumber');
 let formatPlural = createNonInitialisedError('formatPlural');
 
@@ -38,7 +38,7 @@ const withI18n = (Component: any) => {
           translate={translate}
           formatDate={formatDate}
           formatTime={formatTime}
-          formatRelative={formatRelative}
+          formatRelativeTime={formatRelativeTime}
           formatNumber={formatNumber}
           formatPlural={formatPlural}
         />
@@ -85,7 +85,7 @@ class Provider extends React.PureComponent<Props, State> {
 
     formatDate = intl.formatDate;
     formatTime = intl.formatTime;
-    formatRelative = intl.formatRelative;
+    formatRelativeTime = intl.formatRelativeTime;
     formatNumber = intl.formatNumber;
     formatPlural = intl.formatPlural;
 
@@ -175,7 +175,7 @@ export type WithI18nProps = {
   translate: StringFormatter,
   formatDate: Formatter,
   formatTime: Formatter,
-  formatRelative: Formatter,
+  formatRelativeTime: Formatter,
   formatNumber: Formatter,
   formatPlural: Formatter,
 };
@@ -189,8 +189,8 @@ export {
   FormattedDate,
   formatTime,
   FormattedTime,
-  formatRelative,
-  FormattedRelative,
+  formatRelativeTime,
+  FormattedRelativeTime,
   formatNumber,
   FormattedNumber,
   formatPlural,

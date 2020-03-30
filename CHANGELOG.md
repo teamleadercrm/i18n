@@ -1,3 +1,9 @@
+## [4.0.1] - 2020-03-30
+
+### Fixed
+
+- Expose FormattedRelativeTime and formatRelativeTime correctly
+
 ## [4.0.0] - 2020-03-18
 
 ### Changed
