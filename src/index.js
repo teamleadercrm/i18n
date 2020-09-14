@@ -16,8 +16,6 @@ import {
 } from 'react-intl';
 import NotInitialisedError, { createNonInitialisedError } from './NotInitialisedError';
 import supportedLocales from './supportedLocales.json';
-import '@formatjs/intl-pluralrules/polyfill';
-import '@formatjs/intl-relativetimeformat/polyfill';
 
 let translate = createNonInitialisedError('translate');
 let Translation = createNonInitialisedError('Translation');
@@ -70,7 +68,7 @@ class Provider extends React.PureComponent<Props, State> {
     const locale = this.getUserLocale();
     const { debug } = this.props;
 
-    await this.setLocaleData(locale);
+    await this.loadPolyfills(locale);
 
     const translations = await this.fetchTranslations(locale);
 
@@ -142,21 +140,15 @@ class Provider extends React.PureComponent<Props, State> {
     return locale.split('-')[0];
   }
 
-  async setLocaleData(locale: string): Promise<Array<Object>> {
+  async loadPolyfills(locale: string): Promise<Array<Object>> {
     if (!Intl.PluralRules) {
-      if (locale === 'tlh-KL') {
-        await import(`@formatjs/intl-pluralrules/dist/locale-data/en`);
-      } else {
-        await import(`@formatjs/intl-pluralrules/dist/locale-data/${language}`);
-      }
+      await import('@formatjs/intl-pluralrules/polyfill');
+      await import(`@formatjs/intl-pluralrules/locale-data/${this.localeToLanguage(locale)}`);
     }
 
     if (!Intl.RelativeTimeFormat) {
-      if (locale === 'tlh-KL') {
-        await import(`@formatjs/intl-relativetimeformat/dist/locale-data/en`);
-      } else {
-        await import(`@formatjs/intl-relativetimeformat/dist/locale-data/${language}`);
-      }
+      await import('@formatjs/intl-relativetimeformat/polyfill');
+      await import(`@formatjs/intl-relativetimeformat/locale-data/${this.localeToLanguage(locale)}`);
     }
   }
 
