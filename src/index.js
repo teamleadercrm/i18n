@@ -144,18 +144,18 @@ class Provider extends React.PureComponent<Props, State> {
     if (!Intl.PluralRules) {
       await import('@formatjs/intl-pluralrules/polyfill');
       if (locale === 'tlh-KL') {
-        await import(`@formatjs/intl-pluralrules/dist/locale-data/en`);
+        await import(`@formatjs/intl-pluralrules/locale-data/en`);
       } else {
-        await import(`@formatjs/intl-pluralrules/dist/locale-data/${language}`);
+        await import(`@formatjs/intl-pluralrules/locale-data/${language}`);
       }
     }
 
     if (!Intl.RelativeTimeFormat) {
       await import('@formatjs/intl-relativetimeformat/polyfill');
       if (locale === 'tlh-KL') {
-        await import(`@formatjs/intl-relativetimeformat/dist/locale-data/en`);
+        await import(`@formatjs/intl-relativetimeformat/locale-data/en`);
       } else {
-        await import(`@formatjs/intl-relativetimeformat/dist/locale-data/${language}`);
+        await import(`@formatjs/intl-relativetimeformat/locale-data/${language}`);
       }
     }
   }
