@@ -1,3 +1,14 @@
+## [5.0.0] - 2020-09-14
+
+### Fixed
+
+- Intl.PluralRules and Intl.RelativeTimeFormat polyfills not being loaded correctly ([@ArnaudWeyts](https://github.com/ArnaudWeyts) in [#19](https://github.com/teamleadercrm/i18n/pull/19))
+
+### Changed
+
+- Bump @formatjs polyfill packages to latest version ([@ArnaudWeyts](https://github.com/ArnaudWeyts) in [#19](https://github.com/teamleadercrm/i18n/pull/19))
+- **Breaking**: bump react-intl from 4.x.x to 5.x.x, see [react-intl changelog](https://github.com/formatjs/formatjs/blob/main/packages/react-intl/CHANGELOG.md#500-2020-07-03) before upgrading ([@ArnaudWeyts](https://github.com/ArnaudWeyts) in [#19](https://github.com/teamleadercrm/i18n/pull/19))
+
 ## [4.0.1] - 2020-03-30
 
 ### Fixed
