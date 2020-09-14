@@ -143,20 +143,12 @@ class Provider extends React.PureComponent<Props, State> {
   async loadPolyfills(locale: string): Promise<Array<Object>> {
     if (!Intl.PluralRules) {
       await import('@formatjs/intl-pluralrules/polyfill');
-      if (locale === 'tlh-KL') {
-        await import(`@formatjs/intl-pluralrules/locale-data/en`);
-      } else {
-        await import(`@formatjs/intl-pluralrules/locale-data/${language}`);
-      }
+      await import(`@formatjs/intl-pluralrules/locale-data/${this.localeToLanguage(locale)}`);
     }
 
     if (!Intl.RelativeTimeFormat) {
       await import('@formatjs/intl-relativetimeformat/polyfill');
-      if (locale === 'tlh-KL') {
-        await import(`@formatjs/intl-relativetimeformat/locale-data/en`);
-      } else {
-        await import(`@formatjs/intl-relativetimeformat/locale-data/${language}`);
-      }
+      await import(`@formatjs/intl-relativetimeformat/locale-data/${this.localeToLanguage(locale)}`);
     }
   }
 
