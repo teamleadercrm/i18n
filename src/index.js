@@ -87,7 +87,7 @@ class Provider extends React.PureComponent<Props, State> {
     formatNumber = intl.formatNumber;
     formatPlural = intl.formatPlural;
 
-    translate = (id: string, values: ?Object): string => intl.formatMessage({ id: this.getTranslationId(id) }, values);
+    translate = debug ? (id: string) => this.getTranslationId(id) : (id: string, values: ?Object): string => intl.formatMessage({ id: this.getTranslationId(id) }, values);
     Translation = props => <FormattedMessage {...props} id={props.id && this.getTranslationId(props.id)} />;
 
     this.setState({ intl });
