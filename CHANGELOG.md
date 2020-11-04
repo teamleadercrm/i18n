@@ -1,3 +1,9 @@
+## [6.0.0] - 2020-11-03
+
+### Fixed
+
+- Return translation ids when debug flag is set to true
+
 ## [5.0.0] - 2020-09-14
 
 ### Fixed
