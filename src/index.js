@@ -53,6 +53,7 @@ type Props = {
   locale: ?string,
   debug: ?boolean,
   path: string | (string => string),
+  fallback: ?any
 };
 
 type State = {
@@ -154,7 +155,7 @@ class Provider extends React.PureComponent<Props, State> {
 
   render() {
     if (!this.state.intl) {
-      return null;
+      return this.props.fallback || null;
     }
 
     return <RawIntlProvider value={this.state.intl}>{this.props.children}</RawIntlProvider>;
