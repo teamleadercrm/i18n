@@ -1,3 +1,9 @@
+## [6.1.0] - 2021-01-18
+
+### Added
+
+- Support a fallback component to render while fetching translations
+
 ## [6.0.0] - 2020-11-03
 
 ### Fixed
