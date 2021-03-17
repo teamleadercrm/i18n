@@ -144,12 +144,92 @@ class Provider extends React.PureComponent<Props, State> {
   async loadPolyfills(locale: string): Promise<Array<Object>> {
     if (!Intl.PluralRules) {
       await import('@formatjs/intl-pluralrules/polyfill');
-      await import(`@formatjs/intl-pluralrules/locale-data/${this.localeToLanguage(locale)}`);
+      switch (this.localeToLanguage(locale)) {
+        case 'nl':
+          import(`@formatjs/intl-pluralrules/locale-data/nl`);
+          break;
+        case 'fr':
+          import(`@formatjs/intl-pluralrules/locale-data/fr`);
+          break;
+        case 'de':
+          import(`@formatjs/intl-pluralrules/locale-data/de`);
+          break;
+        case 'es':
+          import(`@formatjs/intl-pluralrules/locale-data/es`);
+          break;
+        case 'it':
+          import(`@formatjs/intl-pluralrules/locale-data/it`);
+          break;
+        case 'da':
+          import(`@formatjs/intl-pluralrules/locale-data/da`);
+          break;
+        case 'pt':
+          import(`@formatjs/intl-pluralrules/locale-data/pt`);
+          break;
+        case 'pl':
+          import(`@formatjs/intl-pluralrules/locale-data/pl`);
+          break;
+        case 'tr':
+          import(`@formatjs/intl-pluralrules/locale-data/tr`);
+          break;
+        case 'nb':
+          import(`@formatjs/intl-pluralrules/locale-data/nb`);
+          break;
+        case 'fi':
+          import(`@formatjs/intl-pluralrules/locale-data/fi`);
+          break;
+        case 'sv':
+          import(`@formatjs/intl-pluralrules/locale-data/sv`);
+          break;
+        default:
+          import(`@formatjs/intl-pluralrules/locale-data/en`);
+          break;
+      }
     }
 
     if (!Intl.RelativeTimeFormat) {
       await import('@formatjs/intl-relativetimeformat/polyfill');
-      await import(`@formatjs/intl-relativetimeformat/locale-data/${this.localeToLanguage(locale)}`);
+      switch (this.localeToLanguage(locale)) {
+        case 'nl':
+          import(`@formatjs/intl-relativetimeformat/locale-data/nl`);
+          break;
+        case 'fr':
+          import(`@formatjs/intl-relativetimeformat/locale-data/fr`);
+          break;
+        case 'de':
+          import(`@formatjs/intl-relativetimeformat/locale-data/de`);
+          break;
+        case 'es':
+          import(`@formatjs/intl-relativetimeformat/locale-data/es`);
+          break;
+        case 'it':
+          import(`@formatjs/intl-relativetimeformat/locale-data/it`);
+          break;
+        case 'da':
+          import(`@formatjs/intl-relativetimeformat/locale-data/da`);
+          break;
+        case 'pt':
+          import(`@formatjs/intl-relativetimeformat/locale-data/pt`);
+          break;
+        case 'pl':
+          import(`@formatjs/intl-relativetimeformat/locale-data/pl`);
+          break;
+        case 'tr':
+          import(`@formatjs/intl-relativetimeformat/locale-data/tr`);
+          break;
+        case 'nb':
+          import(`@formatjs/intl-relativetimeformat/locale-data/nb`);
+          break;
+        case 'fi':
+          import(`@formatjs/intl-relativetimeformat/locale-data/fi`);
+          break;
+        case 'sv':
+          import(`@formatjs/intl-relativetimeformat/locale-data/sv`);
+          break;
+        default:
+          import(`@formatjs/intl-relativetimeformat/locale-data/en`);
+          break;
+      }
     }
   }
 
