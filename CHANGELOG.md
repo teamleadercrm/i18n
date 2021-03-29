@@ -1,3 +1,10 @@
+## [6.2.0] - 2021-03-29
+
+### Changed
+
+- Do not transpile dynamic import statements to allow for code splitting.
+- Bump @babel/cli, @babel/core, @babel/plugin-proposal-class-properties, @babel/plugin-proposal-export-default-from, @babel/plugin-proposal-export-namespace-from, @babel/plugin-proposal-object-rest-spread, @babel/plugin-syntax-dynamic-import, @babel/preset-env, @babel/preset-flow and @babel/preset-react
+
 ## [6.1.0] - 2021-01-19
 
 ### Added

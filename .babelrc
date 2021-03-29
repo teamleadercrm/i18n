@@ -13,6 +13,7 @@
     [
       "@babel/preset-env",
       {
+        "exclude": ["@babel/plugin-proposal-dynamic-import"],
         "targets": {
           "browsers": [">0.5%, ie 11, not op_mini all"]
         }
