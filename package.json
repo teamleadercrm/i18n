@@ -1,6 +1,6 @@
 {
   "name": "@teamleader/i18n",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "Teamleader i18n implementation",
   "author": "Teamleader <development@teamleader.eu>",
   "license": "MIT",
@@ -12,12 +12,12 @@
   "dependencies": {
     "@formatjs/intl-pluralrules": "^3.4.6",
     "@formatjs/intl-relativetimeformat": "^7.2.6",
-    "react-intl": "^5.8.1"
+    "react-intl": "^5.25.1"
   },
   "peerDependencies": {
     "prop-types": ">=15.5.0",
-    "react": ">=16.3.0",
-    "react-dom": ">=16.3.0"
+    "react": "^16 || ^17 || ^18",
+    "react-dom": "^16 || ^17 || ^18"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.10",

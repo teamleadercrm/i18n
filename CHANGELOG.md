@@ -1,3 +1,9 @@
+## [6.3.0] - 2022-05-11
+
+### Changed
+
+- Bump react-intl dependency in order to specifically support react 16, 17 and 18.
+
 ## [6.2.0] - 2021-03-29
 
 ### Changed
