@@ -1,3 +1,9 @@
+## [6.4.0] - 2022-05-25
+
+### Added
+
+- Added support for 'de-CH' locale
+
 ## [6.3.0] - 2022-05-11
 
 ### Changed
